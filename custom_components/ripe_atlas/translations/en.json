@@ -1,0 +1,20 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "RIPE Atlas",
+        "description": "Configure a RIPE Atlas probe to monitor.",
+        "data": {
+          "probe_id": "Probe ID"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "This probe is already configured"
+    }
+  }
+}
