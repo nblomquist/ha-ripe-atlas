@@ -1,0 +1,18 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "RIPE Atlas probes",
+        "description": "Enter one public RIPE Atlas probe per line. Use `probe_id` or `probe_id, friendly name`.",
+        "data": {
+          "probes": "Probes"
+        }
+      }
+    },
+    "error": {
+      "duplicate_probe": "Each probe ID can only be entered once.",
+      "invalid_probe": "Probe IDs must be whole numbers.",
+      "no_probes": "Enter at least one probe ID."
+    }
+  }
+}

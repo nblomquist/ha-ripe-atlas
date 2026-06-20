@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=78.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ha-ripe-atlas"
+version = "0.0.1a0"
+description = "Unofficial Home Assistant custom integration for monitoring RIPE Atlas probes."
+readme = "README.md"
+requires-python = ">=3.14.2"
+license = "MIT"
+authors = [
+  { name = "Nathan Blomquist" }
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3.14",
+]
+dependencies = []
+
+[project.optional-dependencies]
+test = [
+  "pytest>=8.0",
+  "pytest-homeassistant-custom-component>=0.13.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
