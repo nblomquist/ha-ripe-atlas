@@ -8,5 +8,5 @@
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/nblomquist/ha-ripe-atlas/issues",
   "requirements": [],
-  "version": "0.0.1-alpha"
+  "version": "0.0.2-alpha"
 }

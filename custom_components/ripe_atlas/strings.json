@@ -7,6 +7,13 @@
         "data": {
           "probes": "Probes"
         }
+      },
+      "reconfigure": {
+        "title": "Edit RIPE Atlas probes",
+        "description": "Update the probe list, then submit to reload the integration. Current probes:\n\n```text\n{probes}\n```\n\nUse one public RIPE Atlas probe per line: `probe_id` or `probe_id, friendly name`.",
+        "data": {
+          "probes": "Probes"
+        }
       }
     },
     "error": {

@@ -10,13 +10,14 @@ This project is not affiliated with, endorsed by, sponsored by, or maintained by
 
 ## Status
 
-This project is in early alpha development. Version `0.0.1-alpha` exposes public RIPE Atlas probe status as Home Assistant sensor entities, with each configured probe represented as its own Home Assistant device.
+This project is in early alpha development. Version `0.0.2-alpha` exposes public RIPE Atlas probe status as Home Assistant sensor entities, with each configured probe represented as its own Home Assistant device.
 
 Product direction is tracked in [`docs/PRD.md`](docs/PRD.md). The 0.0.1 alpha build sequence is tracked in [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md). Development should proceed in small vertical slices using test-driven development.
 
 ## Alpha Features
 
 - Configure multiple public RIPE Atlas probes by probe ID from the Home Assistant UI in one integration config entry.
+- Edit an existing config entry to add, remove, or rename configured probes.
 - Give each configured probe an optional friendly device name.
 - Poll `GET https://atlas.ripe.net/api/v2/probes/{probe_id}/` for each configured probe every 5 minutes.
 - Represent each RIPE Atlas probe as a Home Assistant device.
@@ -28,8 +29,8 @@ Product direction is tracked in [`docs/PRD.md`](docs/PRD.md). The 0.0.1 alpha bu
 - Public probes only.
 - Probe IDs are entered manually in the UI; there is no YAML setup.
 - API key discovery through `/api/v2/probes/my/` is not implemented yet.
-- Reconfigure/edit flow is not implemented yet. To fix a bad probe ID in `0.0.1-alpha`, delete the config entry and create it again.
-- No metadata sensors are included in `0.0.1-alpha`; only the status sensor is created per probe.
+- Probe editing uses the same multiline alpha input format as initial setup. A richer one-probe-at-a-time add flow is not implemented yet.
+- No metadata sensors are included yet; only the status sensor is created per probe.
 
 ## Installation
 
@@ -86,6 +87,8 @@ Duplicate probe IDs, blank input, and non-integer probe IDs are rejected before 
 
 During setup, the integration fetches each configured probe from RIPE Atlas. A missing probe returns a permanent setup error and creates no misleading entities. Temporary communication failures are left retryable by Home Assistant.
 
+To add, remove, or rename probes later, open the existing RIPE Atlas integration entry from **Settings > Devices & services** and choose **Configure**. Update the same probe list and submit; Home Assistant reloads the entry and recreates the probe devices/entities from the updated list.
+
 ## Development
 
 Home Assistant core currently requires Python 3.14.2 or newer; this repo pins Python 3.14.5 in `mise.toml` to match Home Assistant core's current development version.
@@ -115,6 +118,12 @@ custom_components/ripe_atlas
 - No project lint/typecheck commands exist yet; add and document them before relying on them.
 
 ## Release Notes
+
+### 0.0.2-alpha
+
+- Added a reconfigure flow for editing the existing probe list.
+- Existing config entries can now add, remove, or rename probes without deleting the entry.
+- Kept the same alpha multiline input format for setup and reconfigure.
 
 ### 0.0.1-alpha
 

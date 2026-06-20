@@ -21,4 +21,4 @@ def test_manifest_declares_expected_domain() -> None:
     assert manifest["config_flow"] is True
     assert manifest["integration_type"] == "service"
     assert manifest["iot_class"] == "cloud_polling"
-    assert manifest["version"] == "0.0.1-alpha"
+    assert manifest["version"] == "0.0.2-alpha"

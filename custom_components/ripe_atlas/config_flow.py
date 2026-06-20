@@ -54,6 +54,21 @@ def _parse_probes(value: str) -> list[dict[str, int | str]]:
     return probes
 
 
+def _format_probes(probes: list[dict[str, int | str]]) -> str:
+    """Format stored probe objects as alpha probe input lines."""
+    lines: list[str] = []
+
+    for probe in probes:
+        probe_id = probe[CONF_PROBE_ID]
+        name = probe.get(CONF_PROBE_NAME)
+        if name:
+            lines.append(f"{probe_id}, {name}")
+        else:
+            lines.append(str(probe_id))
+
+    return "\n".join(lines)
+
+
 class RipeAtlasConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for RIPE Atlas."""
 
@@ -77,8 +92,45 @@ class RipeAtlasConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     data={CONF_PROBES: probes},
                 )
 
+        return self._show_probe_form("user", errors)
+
+    async def async_step_reconfigure(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Handle reconfiguring an existing RIPE Atlas entry."""
+        errors: dict[str, str] = {}
+        entry = self._get_reconfigure_entry()
+
+        if user_input is not None:
+            try:
+                probes = _parse_probes(user_input[CONF_PROBES])
+            except ProbeInputError as err:
+                errors[CONF_PROBES] = err.reason
+            else:
+                return self.async_update_reload_and_abort(
+                    entry,
+                    data={CONF_PROBES: probes},
+                )
+
+        return self._show_probe_form(
+            "reconfigure",
+            errors,
+            _format_probes(entry.data[CONF_PROBES]),
+        )
+
+    def _show_probe_form(
+        self,
+        step_id: str,
+        errors: dict[str, str],
+        current_probes: str | None = None,
+    ) -> FlowResult:
+        """Show a probe input form."""
+        description_placeholders = None
+        if current_probes is not None:
+            description_placeholders = {CONF_PROBES: current_probes}
+
         return self.async_show_form(
-            step_id="user",
+            step_id=step_id,
             data_schema=vol.Schema(
                 {
                     vol.Required(CONF_PROBES): TextSelector(
@@ -87,4 +139,5 @@ class RipeAtlasConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 }
             ),
             errors=errors,
+            description_placeholders=description_placeholders,
         )
