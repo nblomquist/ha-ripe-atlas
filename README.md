@@ -1,5 +1,9 @@
 # RIPE Atlas for Home Assistant
 
+[![GitHub Release](https://img.shields.io/github/v/release/nblomquist/ha-ripe-atlas?style=for-the-badge)](https://github.com/nblomquist/ha-ripe-atlas/releases)
+[![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://hacs.xyz/docs/faq/custom_repositories/)
+[![License](https://img.shields.io/github/license/nblomquist/ha-ripe-atlas?style=for-the-badge)](LICENSE)
+
 Unofficial third-party Home Assistant custom integration for monitoring RIPE Atlas probes via the RIPE Atlas API.
 
 This project is not affiliated with, endorsed by, sponsored by, or maintained by Home Assistant, Nabu Casa, RIPE NCC, or the RIPE Atlas project. Home Assistant and RIPE Atlas are trademarks of their respective owners.
@@ -29,7 +33,24 @@ Product direction is tracked in [`docs/PRD.md`](docs/PRD.md). The 0.0.1 alpha bu
 
 ## Installation
 
-Copy or symlink the integration directory into your Home Assistant configuration directory:
+### Option A: HACS Custom Repository
+
+This integration is not in the HACS default repository list yet. Install it as a HACS custom repository.
+
+[![Open your Home Assistant instance and add this repository to HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=nblomquist&repository=ha-ripe-atlas&category=integration)
+
+Manual HACS steps:
+
+1. Open **HACS > Integrations**.
+2. Open the three-dot menu and choose **Custom repositories**.
+3. Add `https://github.com/nblomquist/ha-ripe-atlas`.
+4. Select category **Integration**.
+5. Install **RIPE Atlas**.
+6. Restart Home Assistant.
+
+### Option B: Manual Install
+
+Copy the integration directory into your Home Assistant configuration directory:
 
 ```sh
 mkdir -p /path/to/homeassistant/config/custom_components
