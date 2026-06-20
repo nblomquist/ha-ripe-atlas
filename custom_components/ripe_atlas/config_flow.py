@@ -112,10 +112,12 @@ class RipeAtlasConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     data={CONF_PROBES: probes},
                 )
 
+        current_probes = _format_probes(entry.data[CONF_PROBES])
         return self._show_probe_form(
             "reconfigure",
             errors,
-            _format_probes(entry.data[CONF_PROBES]),
+            current_probes,
+            current_probes,
         )
 
     def _show_probe_form(
@@ -123,17 +125,21 @@ class RipeAtlasConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         step_id: str,
         errors: dict[str, str],
         current_probes: str | None = None,
+        default_probes: str | None = None,
     ) -> FlowResult:
         """Show a probe input form."""
         description_placeholders = None
         if current_probes is not None:
             description_placeholders = {CONF_PROBES: current_probes}
+        probes_field = vol.Required(CONF_PROBES)
+        if default_probes is not None:
+            probes_field = vol.Required(CONF_PROBES, default=default_probes)
 
         return self.async_show_form(
             step_id=step_id,
             data_schema=vol.Schema(
                 {
-                    vol.Required(CONF_PROBES): TextSelector(
+                    probes_field: TextSelector(
                         TextSelectorConfig(multiline=True)
                     )
                 }

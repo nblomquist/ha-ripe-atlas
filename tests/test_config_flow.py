@@ -94,6 +94,9 @@ async def test_reconfigure_flow_updates_existing_probe_list(
     assert result["description_placeholders"] == {
         CONF_PROBES: "12345, Home Fiber"
     }
+    schema = result["data_schema"].schema
+    probes_field = next(iter(schema))
+    assert probes_field.default() == "12345, Home Fiber"
 
     result = await hass.config_entries.flow.async_configure(
         result["flow_id"],
