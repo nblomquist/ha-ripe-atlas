@@ -1,2 +1,4 @@
 [tools]
+jq = "latest"
 python = "3.14.5"
+ripgrep = "latest"

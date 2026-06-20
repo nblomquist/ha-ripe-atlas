@@ -13,13 +13,13 @@
 - The config flow and reconfigure flow reject blank input, duplicate probe IDs, and non-integer probe IDs before creating/updating an entry. They do not call RIPE Atlas.
 - `api.py` fetches public probe details from `GET https://atlas.ripe.net/api/v2/probes/{probe_id}/` with an injected aiohttp-compatible session and maps RIPE Atlas failures to integration exceptions.
 - `coordinator.py` implements `RipeAtlasDataUpdateCoordinator` with a 5-minute update interval and stores normalized probe data keyed by probe ID.
-- `sensor.py` creates one status `SensorEntity` per configured probe, attached to a per-probe device with identifiers `(DOMAIN, str(probe_id))` and unique IDs like `<probe_id>_status`.
+- `sensor.py` creates status and diagnostic metadata `SensorEntity` instances per configured probe, attached to a per-probe device with identifiers `(DOMAIN, str(probe_id))` and unique IDs like `<probe_id>_status` and `<probe_id>_total_uptime`.
 
 ## Verification
-- Python is pinned with `mise.toml` to `3.14.5`, matching Home Assistant core's current development `.python-version`; use `mise install` before creating a venv when using mise.
+- Python is pinned with `mise.toml` to `3.14.5`, matching Home Assistant core's current development `.python-version`; `jq` and `ripgrep` are also available through mise. Use `mise install` before creating a venv when using mise.
 - Local test setup: `mise install`, `mise exec -- python -m venv .venv`, `source .venv/bin/activate`, `python -m pip install -e ".[test]"`.
 - Run local tests with `pytest` after activating `.venv`.
-- Current verified test suite covers the config flow, reconfigure flow, API client, coordinator setup, status entities/devices, bad probe setup behavior, and scaffold manifest expectations.
+- Current verified test suite covers the config flow, reconfigure flow, API client, coordinator setup, status and metadata entities/devices, bad probe setup behavior, and scaffold manifest expectations.
 - No lint, typecheck, CI, lockfile, or formatter config exists yet. Do not invent those commands; verify with tests and targeted syntax/import checks until tooling is added.
 - For Home Assistant runtime testing, use the README workflow: copy or symlink `custom_components/ripe_atlas` into a Home Assistant `custom_components` directory and restart Home Assistant.
 - If a configured probe returns 404 during setup, Home Assistant marks the entry as a non-retryable setup error and no entities are created. In `0.0.2-alpha`, users can fix probe IDs through the reconfigure flow when Home Assistant exposes the entry configuration action; otherwise they can delete and recreate the config entry.
@@ -39,5 +39,5 @@
 - Use probe IDs for stable unique IDs/device identifiers; use user-provided friendly names for display names when available.
 - Start with public probe lookup by `GET https://atlas.ripe.net/api/v2/probes/{probe_id}/` for each configured probe; only optimize to a multi-ID list endpoint after verifying RIPE Atlas supports it.
 - Add API key support only when implementing authenticated discovery.
-- Do not add metadata sensors, changing attributes, YAML setup, or API-key discovery to the current alpha unless the product plan changes.
+- Do not add changing attributes, YAML setup, or API-key discovery to the current alpha unless the product plan changes.
 - Home Assistant config flows do not provide an inline dynamic `+` row UI for arbitrary repeated objects. If improving the probe-entry UX, prefer a native repeated-step flow: enter one probe ID/name, then choose add another or finish.

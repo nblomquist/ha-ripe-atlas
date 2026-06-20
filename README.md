@@ -21,7 +21,7 @@ Product direction is tracked in [`docs/PRD.md`](docs/PRD.md). The 0.0.1 alpha bu
 - Give each configured probe an optional friendly device name.
 - Poll `GET https://atlas.ripe.net/api/v2/probes/{probe_id}/` for each configured probe every 5 minutes.
 - Represent each RIPE Atlas probe as a Home Assistant device.
-- Expose one status sensor per probe device.
+- Expose status and diagnostic metadata sensors per probe device.
 - Map RIPE Atlas status IDs to lowercase states: `never_connected`, `connected`, `disconnected`, or `abandoned`.
 
 ## Alpha Limitations
@@ -30,7 +30,19 @@ Product direction is tracked in [`docs/PRD.md`](docs/PRD.md). The 0.0.1 alpha bu
 - Probe IDs are entered manually in the UI; there is no YAML setup.
 - API key discovery through `/api/v2/probes/my/` is not implemented yet.
 - Probe editing uses the same multiline alpha input format as initial setup. A richer one-probe-at-a-time add flow is not implemented yet.
-- No metadata sensors are included yet; only the status sensor is created per probe.
+
+## Entities
+
+Each configured probe device exposes these sensors:
+
+- `Status`: lowercase RIPE Atlas connection status.
+- `Total uptime`: duration sensor in seconds.
+- `IPv4 address`: current public IPv4 address when RIPE Atlas reports one.
+- `IPv6 address`: current public IPv6 address when RIPE Atlas reports one.
+- `Country code`: RIPE Atlas country code.
+- `Firmware version`: probe firmware version.
+- `First connected`: timestamp sensor.
+- `Last connected`: timestamp sensor.
 
 ## Installation
 
@@ -118,6 +130,10 @@ custom_components/ripe_atlas
 - No project lint/typecheck commands exist yet; add and document them before relying on them.
 
 ## Release Notes
+
+### Unreleased
+
+- Added diagnostic sensors for total uptime, IP addresses, country code, firmware version, first connected, and last connected.
 
 ### 0.0.2-alpha
 

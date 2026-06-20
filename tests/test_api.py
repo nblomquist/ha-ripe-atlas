@@ -65,7 +65,13 @@ async def test_get_probe_returns_normalized_probe_data() -> None:
             {
                 "id": 12345,
                 "status": {"id": 1, "name": "Connected"},
-                "description": "Ignored by alpha sensors",
+                "address_v4": "192.0.2.1",
+                "address_v6": "2001:db8::1",
+                "country_code": "US",
+                "firmware_version": "5120-beta",
+                "first_connected": 1780320988,
+                "last_connected": 1781972686,
+                "total_uptime": 1651131,
             },
         )
     )
@@ -76,6 +82,13 @@ async def test_get_probe_returns_normalized_probe_data() -> None:
     assert session.requested_url == "https://atlas.ripe.net/api/v2/probes/12345/"
     assert probe.probe_id == 12345
     assert probe.status_id == 1
+    assert probe.total_uptime == 1651131
+    assert probe.address_v4 == "192.0.2.1"
+    assert probe.address_v6 == "2001:db8::1"
+    assert probe.country_code == "US"
+    assert probe.firmware_version == "5120-beta"
+    assert probe.first_connected == 1780320988
+    assert probe.last_connected == 1781972686
 
 
 async def test_get_probe_maps_404_to_probe_not_found() -> None:
